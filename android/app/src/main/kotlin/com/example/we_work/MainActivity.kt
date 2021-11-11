@@ -1,4 +1,4 @@
-package com.example.we_work
+package com.swyype.we_work
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:we_work/infrastructure/model/worker_details.dart';
 import 'package:we_work/infrastructure/repository/workers_repository.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 part 'worker_details_state.dart';
 part 'worker_details_cubit.freezed.dart';
@@ -19,13 +20,18 @@ class WorkerDetailsCubit extends Cubit<WorkerDetailState> {
   void fetchAllWorkersDetails() async {
     emit(WorkerDetailState.loading());
 
+    final bool isConnected = await InternetConnectionChecker().hasConnection;
+
+    if (!isConnected) {
+      emit(WorkerDetailState.failure(
+          'No or poor internet connection. Kindly retry again'));
+      return;
+    }
+
     try {
       listOfWorkerDetails = await _workersInterface.getAllWorkersDetails();
 
       emit(WorkerDetailState.success(listOfWorkerDetails));
-    } on SocketException {
-      emit(WorkerDetailState.failure(
-          'No or poor internet connection. Kindly retry again'));
     } catch (e) {
       emit(WorkerDetailState.failure(
           'A server error occurred. Kindly retry again'));

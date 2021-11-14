@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:we_work/infrastructure/repository/workers_repository.dart';
 
 part 'worker_details_update_state.dart';
@@ -21,19 +22,22 @@ class WorkerDetailsUpdateCubit extends Cubit<WorkerDetailUpdateState> {
       required String occupation}) async {
     emit(WorkerDetailUpdateState.loading());
 
+    final bool isConnected = await InternetConnectionChecker().hasConnection;
+
+    if (!isConnected) {
+      emit(WorkerDetailUpdateState.failure(
+          'No or poor internet connection. Kindly retry again'));
+      return;
+    }
+
     try {
       await _workersInterface.updateWorkersDetails(
           id: id, bio: bio, email: email, name: name, occupation: occupation);
 
       emit(WorkerDetailUpdateState.success());
     } catch (e) {
-      if (e is SocketException) {
-        emit(WorkerDetailUpdateState.failure(
-            'No or poor internet connection. Kindly retry again'));
-      } else {
-        emit(WorkerDetailUpdateState.failure(
-            'A server error occurred. Kindly retry again'));
-      }
+      emit(WorkerDetailUpdateState.failure(
+          'A server error occurred. Kindly retry again'));
     }
   }
 

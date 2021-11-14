@@ -35,10 +35,15 @@ class _HomePageState extends State<HomePage> {
     scrollController = ScrollController();
     context.read<WorkerDetailsCubit>().fetchAllWorkersDetails();
 
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
     for (var character in characters) {
       precacheImage(character.image, context);
     }
-    super.initState();
+    super.didChangeDependencies();
   }
 
   @override
@@ -151,7 +156,7 @@ class _HomePageState extends State<HomePage> {
               }
 
               for (var i = 0; i < workerDetailsList.length; i++) {
-                images.add(characters[imagesIndex]);
+                images.add(imagesIndex);
                 imagesIndex++;
                 if (imagesIndex == characters.length) {
                   imagesIndex = 0;
@@ -177,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: AnimatedCard(
                         controller: scrollController,
-                        image: images[index],
+                        image: characters[images[index]],
                         index: index,
                         hexCode: hexCodes[index],
                         workerDetail: workerDetail,

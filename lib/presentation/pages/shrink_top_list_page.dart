@@ -83,33 +83,53 @@ class _HomePageState extends State<HomePage> {
     final workerCubit = BlocProvider.of<WorkerDetailsCubit>(context);
     return Container(
       child: Center(
-        child: GestureDetector(
-          onTap: () {
-            workerCubit.fetchAllWorkersDetails();
-          },
-          child: Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.symmetric(horizontal: 40),
-            height: 50,
-            width: 500,
-            decoration: BoxDecoration(
-              color: Color(0xFFF37F2C),
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width - 40,
+            child: Center(
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.black87),
               ),
             ),
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w800,
-                  fontSize: 16,
-                  color: Colors.white),
+          ),
+          SizedBox(height: 40),
+          GestureDetector(
+            onTap: () {
+              workerCubit.fetchAllWorkersDetails();
+            },
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              height: 50,
+              width: 500,
+              decoration: BoxDecoration(
+                color: Color(0xFFF37F2C),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Text(
+                'Retry',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white),
+              ),
             ),
           ),
-        ),
-      ),
+        ],
+      )),
     );
   }
 

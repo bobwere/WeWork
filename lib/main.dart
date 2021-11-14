@@ -8,14 +8,14 @@ import 'package:device_preview/device_preview.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //set blocobserver to log monitor state changes
+  //set blocobserver to log/monitor state changes
   Bloc.observer = WeWorkBlocObserver();
 
   //run application
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
-      builder: (context) => App(), // Wrap your app
+      builder: (context) => App(),
     ),
   );
 }

@@ -35,14 +35,15 @@ class _HomePageState extends State<HomePage> {
     scrollController = ScrollController();
     context.read<WorkerDetailsCubit>().fetchAllWorkersDetails();
 
+    for (var character in characters) {
+      precacheImage(character.image, context);
+    }
+
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    for (var character in characters) {
-      precacheImage(character.image, context);
-    }
     super.didChangeDependencies();
   }
 
